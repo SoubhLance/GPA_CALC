@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRM University GPA Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>SRM University <span class="highlight">GPA Calculator</span></h1>
+            <p>Calculate your GPA, CGPA, and percentage with ease</p>
+        </div>
+
+        <div class="main-content">
+            <div class="tabs">
+                <button class="tab-button active" data-tab="gpa">GPA Calculator</button>
+                <button class="tab-button" data-tab="converter">CGPA Converter</button>
+            </div>
+
+            <div id="gpa-tab" class="tab-content active">
+                <div class="section">
+                    <h3>Semester GPA Calculator</h3>
+                    <div class="course-header">
+                        <div class="header-item">Course #</div>
+                        <div class="header-item">Credits</div>
+                        <div class="header-item">Grade Achieved</div>
+                        <div class="header-item">Action</div>
+                    </div>
+                    <div id="courses-container">
+                        <div class="course-row">
+                            <div class="input-group">
+                                <input type="text" placeholder="Course Name" class="course-name">
+                            </div>
+                            <div class="input-group">
+                                <input type="number" placeholder="Credits" class="course-credits" min="1" max="10">
+                            </div>
+                            <div class="input-group">
+                                <select class="course-grade">
+                                    <option value="0">Select Grade</option>
+                                    <option value="10">O (10)</option>
+                                    <option value="9">A+ (9)</option>
+                                    <option value="8">A (8)</option>
+                                    <option value="7">B+ (7)</option>
+                                    <option value="6">B (6)</option>
+                                    <option value="5">C (5)</option>
+                                    <option value="4">P (4)</option>
+                                    <option value="0">F (0)</option>
+                                </select>
+                            </div>
+                            <button class="remove-btn" onclick="removeCourse(this)">×</button>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button class="add-course-btn" onclick="addCourse()">Add Course</button>
+                        <button class="calculate-btn" onclick="calculateGPA()">Calculate</button>
+                        <button class="reset-btn" onclick="resetGPA()">Reset</button>
+                    </div>
+
+                    <div id="gpa-result" class="result-section">
+                        <h3>Your GPA Result</h3>
+                        <div class="result-value" id="gpa-value">0.00</div>
+                        <div class="result-details">
+                            <p>Total Credits: <span id="total-credits">0</span></p>
+                            <p>Grade Points: <span id="grade-points">0</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="converter-tab" class="tab-content">
+                <div class="converter-section">
+                    <div class="converter-card">
+                        <h3>CGPA to Percentage</h3>
+                        <input type="number" class="converter-input" id="cgpa-input" placeholder="Enter CGPA (0-10)" min="0" max="10" step="0.01">
+                        <div class="converter-result" id="percentage-result">Enter CGPA above</div>
+                    </div>
+
+                    <div class="converter-card">
+                        <h3>Percentage to CGPA</h3>
+                        <input type="number" class="converter-input" id="percentage-input" placeholder="Enter Percentage (0-100)" min="0" max="100" step="0.01">
+                        <div class="converter-result" id="cgpa-result">Enter Percentage above</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2025 SRM University GPA Calculator | Made with ❤️ for SRM Students</p>
+            <p>10-point grading system | <a href="https://github.com/optimusam/srmgpa" target="_blank">View on GitHub</a></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
