@@ -38,3 +38,11 @@ A modern, responsive web application for calculating GPA, CGPA, and percentage c
 
 ### Quick Start
 1. Clone the repository:
+   ```
+   git clone https://github.com/your-username/srm-gpa-calculator.git
+   ```
+2. Navigate to the project directory: 
+```
+cd srm-gpa-calculator
+```
+3. Open `index.html` in your web browser or serve it using a local server:
