@@ -117,16 +117,6 @@ The calculator uses SRM University's official 10-point grading system:
 - **localStorage caching** - Instant data restoration
 - **Responsive images** - Optimized for all screen sizes
 
-## 📱 Screenshots
-
-### Desktop View
-![Desktop GPA Calculator](screenshots/desktop-gpa.png)
-![Desktop Converter](screenshots/desktop-converter.png)
-
-### Mobile View
-![Mobile GPA Calculator](screenshots/mobile-gpa.png)
-![Mobile Converter](screenshots/mobile-converter.png)
-
 ## 🤝 Contributing
 
 We welcome contributions! Please follow these steps:
@@ -185,10 +175,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you encounter any issues or have questions:
 
-1. **Check the FAQ** in the [Wiki](https://github.com/your-username/srm-gpa-calculator/wiki)
-2. **Search existing issues** in the [Issues](https://github.com/your-username/srm-gpa-calculator/issues) tab
+1. **Check the FAQ** in the [Wiki](https://github.com/soubhlance/srm-gpa-calculator/wiki)
+2. **Search existing issues** in the [Issues](https://github.com/soubhlance/srm-gpa-calculator/issues) tab
 3. **Create a new issue** if your problem isn't already reported
-4. **Email**: your-email@example.com
+4. **Email**: studysadhu2022@gmail.com
 
 ## 🌟 Show Your Support
 
