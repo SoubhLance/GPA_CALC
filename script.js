@@ -17,9 +17,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Initialize converter input listeners
+    // Initialize converters and dropdowns
     initializeConverters();
+    initializeDropdowns();
 });
+
+// Initialize dropdown event listeners
+function initializeDropdowns() {
+    document.getElementById('regulation').addEventListener('change', updateCourses);
+    document.getElementById('course').addEventListener('change', updateSemesters);
+    document.getElementById('semester').addEventListener('change', loadSubjects);
+}
 
 // Initialize converter functionality
 function initializeConverters() {
@@ -62,179 +70,6 @@ function initializeConverters() {
         });
     }
 }
-
-// Make sure to call this function when the page loads
-document.addEventListener('DOMContentLoaded', function() {
-    // Your existing tab functionality...
-    
-    // Initialize converter input listeners
-    initializeConverters();
-});
-
-// Tab functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const tabButtons = document.querySelectorAll('.tab-button');
-    const tabContents = document.querySelectorAll('.tab-content');
-
-    tabButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const tabName = this.getAttribute('data-tab');
-            
-            // Remove active class from all buttons and contents
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            tabContents.forEach(content => content.classList.remove('active'));
-            
-            // Add active class to clicked button and corresponding content
-            this.classList.add('active');
-            document.getElementById(tabName + '-tab').classList.add('active');
-        });
-    });
-
-    // Initialize converter input listeners
-    initializeConverters();
-});
-
-// Enhanced converter initialization for both locations
-function initializeConverters() {
-    // Main calculator section converters
-    const cgpaInput = document.getElementById('cgpa-input');
-    const percentageInput = document.getElementById('percentage-input');
-    const cgpaResult = document.getElementById('cgpa-percentage-result');
-    const percentageResult = document.getElementById('percentage-cgpa-result');
-
-    // Separate tab converters
-    const cgpaInputTab = document.getElementById('cgpa-input-tab');
-    const percentageInputTab = document.getElementById('percentage-input-tab');
-    const cgpaResultTab = document.getElementById('cgpa-percentage-result-tab');
-    const percentageResultTab = document.getElementById('percentage-cgpa-result-tab');
-
-    // Setup main calculator converters
-    if (cgpaInput && cgpaResult) {
-        cgpaInput.addEventListener('input', function() {
-            const cgpa = parseFloat(this.value);
-            if (!isNaN(cgpa) && cgpa >= 0 && cgpa <= 10) {
-                const percentage = (cgpa * 9.5).toFixed(2);
-                cgpaResult.textContent = `${percentage}%`;
-                cgpaResult.style.color = '#0ea5e9';
-            } else if (this.value === '') {
-                cgpaResult.textContent = 'Enter CGPA above';
-                cgpaResult.style.color = '#b8c5d6';
-            } else {
-                cgpaResult.textContent = 'Enter valid CGPA (0-10)';
-                cgpaResult.style.color = '#ef4444';
-            }
-        });
-    }
-
-    if (percentageInput && percentageResult) {
-        percentageInput.addEventListener('input', function() {
-            const percentage = parseFloat(this.value);
-            if (!isNaN(percentage) && percentage >= 0 && percentage <= 100) {
-                const cgpa = (percentage / 9.5).toFixed(2);
-                percentageResult.textContent = cgpa;
-                percentageResult.style.color = '#0ea5e9';
-            } else if (this.value === '') {
-                percentageResult.textContent = 'Enter Percentage above';
-                percentageResult.style.color = '#b8c5d6';
-            } else {
-                percentageResult.textContent = 'Enter valid percentage (0-100)';
-                percentageResult.style.color = '#ef4444';
-            }
-        });
-    }
-
-    // Setup separate tab converters
-    if (cgpaInputTab && cgpaResultTab) {
-        cgpaInputTab.addEventListener('input', function() {
-            const cgpa = parseFloat(this.value);
-            if (!isNaN(cgpa) && cgpa >= 0 && cgpa <= 10) {
-                const percentage = (cgpa * 9.5).toFixed(2);
-                cgpaResultTab.textContent = `${percentage}%`;
-                cgpaResultTab.style.color = '#0ea5e9';
-            } else if (this.value === '') {
-                cgpaResultTab.textContent = 'Enter CGPA above';
-                cgpaResultTab.style.color = '#b8c5d6';
-            } else {
-                cgpaResultTab.textContent = 'Enter valid CGPA (0-10)';
-                cgpaResultTab.style.color = '#ef4444';
-            }
-        });
-    }
-
-    if (percentageInputTab && percentageResultTab) {
-        percentageInputTab.addEventListener('input', function() {
-            const percentage = parseFloat(this.value);
-            if (!isNaN(percentage) && percentage >= 0 && percentage <= 100) {
-                const cgpa = (percentage / 9.5).toFixed(2);
-                percentageResultTab.textContent = cgpa;
-                percentageResultTab.style.color = '#0ea5e9';
-            } else if (this.value === '') {
-                percentageResultTab.textContent = 'Enter Percentage above';
-                percentageResultTab.style.color = '#b8c5d6';
-            } else {
-                percentageResultTab.textContent = 'Enter valid percentage (0-100)';
-                percentageResultTab.style.color = '#ef4444';
-            }
-        });
-    }
-}
-
-// Enhanced GPA calculation with percentage conversion
-function calculateGPA() {
-    const regulation = document.getElementById("regulation").value;
-    const course = document.getElementById("course").value;
-    const semester = document.getElementById("semester").value;
-    
-    if (!regulation || !course || !semester) {
-        alert("Please select regulation, course, and semester first.");
-        return;
-    }
-    
-    const subjects = regulations[regulation][course][semester];
-    const selects = document.querySelectorAll("#subjects-container .grade-select");
-    
-    let totalGradePoints = 0;
-    let totalCredits = 0;
-    let unselectedGrades = 0;
-    
-    selects.forEach((select, index) => {
-        const credit = subjects[index].credit;
-        const grade = select.value;
-        
-        if (grade) {
-            const gradePoint = grades[grade];
-            totalCredits += credit;
-            totalGradePoints += gradePoint * credit;
-        } else {
-            unselectedGrades++;
-        }
-    });
-    
-    if (unselectedGrades > 0) {
-        alert(`Please select grades for all ${unselectedGrades} remaining subjects.`);
-        return;
-    }
-    
-    const gpa = totalCredits > 0 ? (totalGradePoints / totalCredits).toFixed(2) : 0;
-    const performance = getPerformanceGrade(parseFloat(gpa));
-    const equivalentPercentage = (parseFloat(gpa) * 9.5).toFixed(2);
-    
-    // Update result display
-    document.getElementById("gpa-result").textContent = gpa;
-    document.getElementById("total-credits").textContent = totalCredits;
-    document.getElementById("total-grade-points").textContent = totalGradePoints.toFixed(2);
-    document.getElementById("performance-grade").textContent = performance;
-    document.getElementById("equivalent-percentage").textContent = equivalentPercentage + "%";
-    
-    // Show result section
-    const resultSection = document.getElementById("result-section");
-    resultSection.classList.add("show");
-    resultSection.scrollIntoView({ behavior: 'smooth' });
-}
-
-// Rest of your existing JavaScript code remains the same...
-// (Include all the other functions like updateCourses, updateSemesters, loadSubjects, etc.)
-
 
 // Grade point mapping
 const grades = {
@@ -439,12 +274,14 @@ function calculateGPA() {
     
     const gpa = totalCredits > 0 ? (totalGradePoints / totalCredits).toFixed(2) : 0;
     const performance = getPerformanceGrade(parseFloat(gpa));
+    const equivalentPercentage = (parseFloat(gpa) * 9.5).toFixed(2);
     
     // Update result display
     document.getElementById("gpa-result").textContent = gpa;
     document.getElementById("total-credits").textContent = totalCredits;
     document.getElementById("total-grade-points").textContent = totalGradePoints.toFixed(2);
     document.getElementById("performance-grade").textContent = performance;
+    document.getElementById("equivalent-percentage").textContent = equivalentPercentage + "%";
     
     // Show result section
     const resultSection = document.getElementById("result-section");
@@ -474,6 +311,7 @@ function resetCalculator() {
     document.getElementById("total-credits").textContent = "0";
     document.getElementById("total-grade-points").textContent = "0";
     document.getElementById("performance-grade").textContent = "-";
+    document.getElementById("equivalent-percentage").textContent = "-";
     
     // Reset selected info
     document.getElementById("selected-regulation").textContent = "-";
@@ -481,7 +319,7 @@ function resetCalculator() {
     document.getElementById("selected-semester").textContent = "-";
 }
 
-// Your regulations data from the provided file
+// Complete regulations data with all courses and semesters
 let regulations = {
     "2018": {
         "CSE": {
@@ -643,20 +481,20 @@ let regulations = {
                 { "subject": "Management Principles for Engineers", "credit": 2 }
             ],
             "Semester 4": [
-                { "subject": "Probability and Queueing Theory", "credit": 4 },
+                { "subject": "Probability and Statistics", "credit": 4 },
                 { "subject": "Computer Communications", "credit": 3 },
                 { "subject": "Design and Analysis of Algorithms", "credit": 4 },
                 { "subject": "Operating Systems", "credit": 4 },
-                { "subject": "Software Engineering and Project Management", "credit": 4 },
+                { "subject": "Machine Learning Fundamentals", "credit": 4 },
                 { "subject": "Advanced Programming Practice", "credit": 4 },
                 { "subject": "Competitive Professional Skills-I", "credit": 1 },
                 { "subject": "Social Engineering", "credit": 2 }
             ],
             "Semester 5": [
                 { "subject": "Discrete Mathematics for Engineers", "credit": 4 },
-                { "subject": "Formal Language and Automata", "credit": 3 },
+                { "subject": "Natural Language Processing", "credit": 3 },
                 { "subject": "Computer Networks", "credit": 4 },
-                { "subject": "Competitive Professional Skills-II", "credit": 1 },
+                { "subject": "Deep Learning", "credit": 4 },
                 { "subject": "Professional Elective - 1", "credit": 3 },
                 { "subject": "Professional Elective - 2", "credit": 3 },
                 { "subject": "Open Elective - 1", "credit": 3 },
@@ -664,7 +502,7 @@ let regulations = {
             ],
             "Semester 6": [
                 { "subject": "Database Management Systems", "credit": 4 },
-                { "subject": "Compiler Design", "credit": 4 },
+                { "subject": "Computer Vision", "credit": 4 },
                 { "subject": "Artificial Intelligence", "credit": 4 },
                 { "subject": "Comprehension", "credit": 1 },
                 { "subject": "Competitive Professional Skills-III", "credit": 1 },
@@ -816,7 +654,75 @@ let regulations = {
                 { "subject": "Major Project / Major Project / Internship", "credit": 15 }
             ]
         },
-        "Big Data Analytics": {
+        "ECE": {
+            "Semester 1": [
+                { "subject": "Communicative English", "credit": 3 },
+                { "subject": "Calculus and Linear Algebra", "credit": 4 },
+                { "subject": "Physics: Electromagnetic Theory, Quantum Mechanics, Waves and Optics", "credit": 5 },
+                { "subject": "Engineering Graphics and Design", "credit": 2 },
+                { "subject": "Electrical and Electronics Engineering", "credit": 4 }
+            ],
+            "Semester 2": [
+                { "subject": "Chinese / French / German / Japanese / Korean / Spanish", "credit": 3 },
+                { "subject": "Philosophy of Engineering", "credit": 2 },
+                { "subject": "Advanced Calculus and Complex Analysis", "credit": 4 },
+                { "subject": "Chemistry", "credit": 5 },
+                { "subject": "Electronic System and PCB Design", "credit": 3 },
+                { "subject": "Programming for Problem Solving", "credit": 4 },
+                { "subject": "Biology", "credit": 2 },
+                { "subject": "Basic Civil and Mechanical Workshop", "credit": 2 }
+            ],
+            "Semester 3": [
+                { "subject": "Transforms and Boundary Value Problems", "credit": 4 },
+                { "subject": "Social Engineering", "credit": 2 },
+                { "subject": "Computer Organization and Architecture", "credit": 4 },
+                { "subject": "Solid State Devices", "credit": 3 },
+                { "subject": "Digital Logic Design", "credit": 3 },
+                { "subject": "Electromagnetic Theory and Interference", "credit": 3 },
+                { "subject": "Devices and Digital IC Lab", "credit": 2 },
+                { "subject": "Universal Human Values - Understanding Harmony and Ethical Human Conduct", "credit": 3 }
+            ],
+            "Semester 4": [
+                { "subject": "Probability and Stochastic Process", "credit": 4 },
+                { "subject": "Analog and Linear Electronic Circuits", "credit": 3 },
+                { "subject": "Signal Processing", "credit": 3 },
+                { "subject": "Analog and Linear Electronic Circuits Lab", "credit": 2 },
+                { "subject": "Artificial Intelligence", "credit": 3 },
+                { "subject": "Professional Elective - I", "credit": 3 },
+                { "subject": "Design Thinking and Methodology", "credit": 3 }
+            ],
+            "Semester 5": [
+                { "subject": "Discrete Mathematics", "credit": 4 },
+                { "subject": "Microprocessor, Microcontroller and Interfacing Techniques", "credit": 4 },
+                { "subject": "VLSI Design and Technology", "credit": 3 },
+                { "subject": "VLSI Design Lab", "credit": 2 },
+                { "subject": "Professional Elective - II", "credit": 3 },
+                { "subject": "Open Elective - I", "credit": 3 },
+                { "subject": "Community Connect", "credit": 1 }
+            ],
+            "Semester 6": [
+                { "subject": "Data Science", "credit": 2 },
+                { "subject": "Analog and Digital Communication", "credit": 3 },
+                { "subject": "Microwave and Optical Communication", "credit": 3 },
+                { "subject": "Communication Lab", "credit": 2 },
+                { "subject": "Professional Elective - III", "credit": 3 },
+                { "subject": "Professional Elective - IV", "credit": 3 },
+                { "subject": "Open Elective - II", "credit": 3 },
+                { "subject": "Project / MOOC", "credit": 3 }
+            ],
+            "Semester 7": [
+                { "subject": "Behavioral Psychology", "credit": 3 },
+                { "subject": "Wireless Communication and Antenna Systems", "credit": 3 },
+                { "subject": "Computer Communication and Network Security", "credit": 3 },
+                { "subject": "Professional Elective - V", "credit": 3 },
+                { "subject": "Professional Elective - VI", "credit": 3 },
+                { "subject": "Open Elective - III", "credit": 3 }
+            ],
+            "Semester 8": [
+                { "subject": "Major Project / Major Project / Internship", "credit": 15 }
+            ]
+        },
+        "IT": {
             "Semester 1": [
                 { "subject": "Chinese / French / German / Japanese / Korean / Spanish", "credit": 3 },
                 { "subject": "Philosophy of Engineering", "credit": 2 },
@@ -835,35 +741,35 @@ let regulations = {
                 { "subject": "Object Oriented Design and Programming", "credit": 3 }
             ],
             "Semester 3": [
-                { "subject": "Transforms and Boundary Value Problems", "credit": 4 },
+                { "subject": "Numerical Methods and Analysis", "credit": 4 },
                 { "subject": "Design Thinking and Methodology", "credit": 3 },
-                { "subject": "Fundamentals of Data Science", "credit": 5 },
+                { "subject": "Computer Organization and Architecture", "credit": 4 },
                 { "subject": "Data Structures and Algorithms", "credit": 4 },
                 { "subject": "Operating Systems", "credit": 4 },
-                { "subject": "Advanced Object Oriented Programming", "credit": 3 }
+                { "subject": "Advanced Programming Practice", "credit": 4 }
             ],
             "Semester 4": [
-                { "subject": "Probability and Statistics", "credit": 4 },
+                { "subject": "Probability and Queueing Theory", "credit": 4 },
                 { "subject": "Design and Analysis of Algorithms", "credit": 4 },
                 { "subject": "Database Management Systems", "credit": 4 },
                 { "subject": "Artificial Intelligence", "credit": 3 },
-                { "subject": "Professional Elective-I", "credit": 3 },
+                { "subject": "Professional Elective - I", "credit": 3 },
                 { "subject": "Social Engineering", "credit": 2 },
-                { "subject": "Universal Human Values-Understanding Harmony and Ethical Human Conduct", "credit": 3 }
+                { "subject": "Universal Human Values - Understanding Harmony and Ethical Human Conduct", "credit": 3 }
             ],
             "Semester 5": [
                 { "subject": "Discrete Mathematics", "credit": 4 },
                 { "subject": "Formal Language and Automata", "credit": 3 },
                 { "subject": "Computer Networks", "credit": 4 },
-                { "subject": "Machine Learning for Data Analytics", "credit": 3 },
+                { "subject": "Big Data Essentials", "credit": 3 },
                 { "subject": "Professional Elective - II", "credit": 3 },
                 { "subject": "Open Elective - I", "credit": 3 },
                 { "subject": "Community Connect", "credit": 1 }
             ],
             "Semester 6": [
-                { "subject": "Full Stack Development", "credit": 2 },
-                { "subject": "Software Engineering and Project Management", "credit": 3 },
-                { "subject": "Compiler Design", "credit": 3 },
+                { "subject": "Data Science", "credit": 2 },
+                { "subject": "Software Engineering Perspectives in Computer Game Development", "credit": 3 },
+                { "subject": "Information Retrieval Techniques", "credit": 3 },
                 { "subject": "Professional Elective - III", "credit": 3 },
                 { "subject": "Professional Elective - IV", "credit": 3 },
                 { "subject": "Open Elective - II", "credit": 3 },
@@ -940,274 +846,6 @@ let regulations = {
                 { "subject": "Professional Elective - VI", "credit": 3 },
                 { "subject": "Professional Elective - VII", "credit": 3 },
                 { "subject": "Professional Elective - VIII", "credit": 3 },
-                { "subject": "Open Elective - III", "credit": 3 }
-            ],
-            "Semester 8": [
-                { "subject": "Major Project / Major Project / Internship", "credit": 15 }
-            ]
-        },
-        "IT": {
-            "Semester 1": [
-                { "subject": "Chinese / French / German / Japanese / Korean / Spanish", "credit": 3 },
-                { "subject": "Philosophy of Engineering", "credit": 2 },
-                { "subject": "Calculus and Linear Algebra", "credit": 4 },
-                { "subject": "Chemistry", "credit": 5 },
-                { "subject": "Introduction to Computational Biology", "credit": 2 },
-                { "subject": "Programming for Problem Solving", "credit": 4 },
-                { "subject": "Basic Civil and Mechanical Workshop", "credit": 2 }
-            ],
-            "Semester 2": [
-                { "subject": "Communicative English", "credit": 3 },
-                { "subject": "Advanced Calculus and Complex Analysis", "credit": 4 },
-                { "subject": "Semiconductor Physics and Computational Methods", "credit": 5 },
-                { "subject": "Engineering Graphics and Design", "credit": 2 },
-                { "subject": "Electrical and Electronics Engineering", "credit": 4 },
-                { "subject": "Object Oriented Design and Programming", "credit": 3 }
-            ],
-            "Semester 3": [
-                { "subject": "Numerical Methods and Analysis", "credit": 4 },
-                { "subject": "Design Thinking and Methodology", "credit": 3 },
-                { "subject": "Computer Organization and Architecture", "credit": 4 },
-                { "subject": "Data Structures and Algorithms", "credit": 4 },
-                { "subject": "Operating Systems", "credit": 4 },
-                { "subject": "Advanced Programming Practice", "credit": 4 }
-            ],
-            "Semester 4": [
-                { "subject": "Probability and Queueing Theory", "credit": 4 },
-                { "subject": "Design and Analysis of Algorithms", "credit": 4 },
-                { "subject": "Database Management Systems", "credit": 4 },
-                { "subject": "Artificial Intelligence", "credit": 3 },
-                { "subject": "Professional Elective - I", "credit": 3 },
-                { "subject": "Social Engineering", "credit": 2 },
-                { "subject": "Universal Human Values - Understanding Harmony and Ethical Human Conduct", "credit": 3 }
-            ],
-            "Semester 5": [
-                { "subject": "Discrete Mathematics", "credit": 4 },
-                { "subject": "Formal Language and Automata", "credit": 3 },
-                { "subject": "Computer Networks", "credit": 4 },
-                { "subject": "Big Data Essentials", "credit": 3 },
-                { "subject": "Professional Elective - II", "credit": 3 },
-                { "subject": "Open Elective - I", "credit": 3 },
-                { "subject": "Community Connect", "credit": 1 }
-            ],
-            "Semester 6": [
-                { "subject": "Data Science", "credit": 2 },
-                { "subject": "Software Engineering Perspectives in Computer Game Development", "credit": 3 },
-                { "subject": "Information Retrieval Techniques", "credit": 3 },
-                { "subject": "Professional Elective - III", "credit": 3 },
-                { "subject": "Professional Elective - IV", "credit": 3 },
-                { "subject": "Open Elective - II", "credit": 3 },
-                { "subject": "Project / MOOC", "credit": 3 }
-            ],
-            "Semester 7": [
-                { "subject": "Behavioral Psychology", "credit": 3 },
-                { "subject": "Professional Elective - V", "credit": 3 },
-                { "subject": "Professional Elective - VI", "credit": 3 },
-                { "subject": "Professional Elective - VII", "credit": 3 },
-                { "subject": "Professional Elective - VIII", "credit": 3 },
-                { "subject": "Open Elective - III", "credit": 3 }
-            ],
-            "Semester 8": [
-                { "subject": "Major Project / Major Project / Internship", "credit": 15 }
-            ]
-        },
-        "ECE": {
-            "Semester 1": [
-                { "subject": "Communicative English", "credit": 3 },
-                { "subject": "Calculus and Linear Algebra", "credit": 4 },
-                { "subject": "Physics: Electromagnetic Theory, Quantum Mechanics, Waves and Optics", "credit": 5 },
-                { "subject": "Engineering Graphics and Design", "credit": 2 },
-                { "subject": "Electrical and Electronics Engineering", "credit": 4 }
-            ],
-            "Semester 2": [
-                { "subject": "Chinese / French / German / Japanese / Korean / Spanish", "credit": 3 },
-                { "subject": "Philosophy of Engineering", "credit": 2 },
-                { "subject": "Advanced Calculus and Complex Analysis", "credit": 4 },
-                { "subject": "Chemistry", "credit": 5 },
-                { "subject": "Electronic System and PCB Design", "credit": 3 },
-                { "subject": "Programming for Problem Solving", "credit": 4 },
-                { "subject": "Biology", "credit": 2 },
-                { "subject": "Basic Civil and Mechanical Workshop", "credit": 2 }
-            ],
-            "Semester 3": [
-                { "subject": "Transforms and Boundary Value Problems", "credit": 4 },
-                { "subject": "Social Engineering", "credit": 2 },
-                { "subject": "Computer Organization and Architecture", "credit": 4 },
-                { "subject": "Solid State Devices", "credit": 3 },
-                { "subject": "Digital Logic Design", "credit": 3 },
-                { "subject": "Electromagnetic Theory and Interference", "credit": 3 },
-                { "subject": "Devices and Digital IC Lab", "credit": 2 },
-                { "subject": "Universal Human Values - Understanding Harmony and Ethical Human Conduct", "credit": 3 }
-            ],
-            "Semester 4": [
-                { "subject": "Probability and Stochastic Process", "credit": 4 },
-                { "subject": "Analog and Linear Electronic Circuits", "credit": 3 },
-                { "subject": "Signal Processing", "credit": 3 },
-                { "subject": "Analog and Linear Electronic Circuits Lab", "credit": 2 },
-                { "subject": "Artificial Intelligence", "credit": 3 },
-                { "subject": "Professional Elective - I", "credit": 3 },
-                { "subject": "Design Thinking and Methodology", "credit": 3 }
-            ],
-            "Semester 5": [
-                { "subject": "Discrete Mathematics", "credit": 4 },
-                { "subject": "Microprocessor, Microcontroller and Interfacing Techniques", "credit": 4 },
-                { "subject": "VLSI Design and Technology", "credit": 3 },
-                { "subject": "VLSI Design Lab", "credit": 2 },
-                { "subject": "Professional Elective - II", "credit": 3 },
-                { "subject": "Open Elective - I", "credit": 3 },
-                { "subject": "Community Connect", "credit": 1 }
-            ],
-            "Semester 6": [
-                { "subject": "Data Science", "credit": 2 },
-                { "subject": "Analog and Digital Communication", "credit": 3 },
-                { "subject": "Microwave and Optical Communication", "credit": 3 },
-                { "subject": "Communication Lab", "credit": 2 },
-                { "subject": "Professional Elective - III", "credit": 3 },
-                { "subject": "Professional Elective - IV", "credit": 3 },
-                { "subject": "Open Elective - II", "credit": 3 },
-                { "subject": "Project / MOOC", "credit": 3 }
-            ],
-            "Semester 7": [
-                { "subject": "Behavioral Psychology", "credit": 3 },
-                { "subject": "Wireless Communication and Antenna Systems", "credit": 3 },
-                { "subject": "Computer Communication and Network Security", "credit": 3 },
-                { "subject": "Professional Elective - V", "credit": 3 },
-                { "subject": "Professional Elective - VI", "credit": 3 },
-                { "subject": "Open Elective - III", "credit": 3 }
-            ],
-            "Semester 8": [
-                { "subject": "Major Project / Major Project / Internship", "credit": 15 }
-            ]
-        },
-        "Biotechnology": {
-            "Semester 1": [
-                { "subject": "Communicative English", "credit": 3 },
-                { "subject": "Calculus and Linear Algebra", "credit": 4 },
-                { "subject": "Physics: Electromagnetic Theory, Quantum Mechanics, Waves and Optics", "credit": 5 },
-                { "subject": "Engineering Graphics and Design", "credit": 2 },
-                { "subject": "Electrical and Electronics Engineering", "credit": 4 }
-            ],
-            "Semester 2": [
-                { "subject": "Chinese / French / German / Japanese / Korean / Spanish", "credit": 3 },
-                { "subject": "Philosophy of Engineering", "credit": 2 },
-                { "subject": "Advanced Calculus and Complex Analysis", "credit": 4 },
-                { "subject": "Chemistry", "credit": 5 },
-                { "subject": "Cell Biology", "credit": 2 },
-                { "subject": "Programming for Problem Solving", "credit": 4 },
-                { "subject": "Biochemistry", "credit": 3 },
-                { "subject": "Basic Civil and Mechanical Workshop", "credit": 2 }
-            ],
-            "Semester 3": [
-                { "subject": "Basic Chemical Engineering", "credit": 3 },
-                { "subject": "Social Engineering", "credit": 2 },
-                { "subject": "Biochemistry Laboratory", "credit": 2 },
-                { "subject": "Microbiology", "credit": 3 },
-                { "subject": "Cell and Microbiology Laboratory", "credit": 2 },
-                { "subject": "Bioprocess Principles", "credit": 3 },
-                { "subject": "Bioprocess Principles Laboratory", "credit": 2 },
-                { "subject": "Genetics and Cytogenetics", "credit": 3 },
-                { "subject": "Universal Human Values - Understanding Harmony and Ethical Human Conduct", "credit": 3 }
-            ],
-            "Semester 4": [
-                { "subject": "Chemical Engineering Principles", "credit": 4 },
-                { "subject": "Artificial Intelligence", "credit": 3 },
-                { "subject": "Molecular Biology", "credit": 3 },
-                { "subject": "Molecular Biology Laboratory", "credit": 2 },
-                { "subject": "Bioprocess Engineering", "credit": 3 },
-                { "subject": "Bioprocess Engineering Laboratory", "credit": 2 },
-                { "subject": "Professional Elective - I", "credit": 3 },
-                { "subject": "Design Thinking and Methodology", "credit": 3 }
-            ],
-            "Semester 5": [
-                { "subject": "Bio-Statistics for Biotechnologists", "credit": 4 },
-                { "subject": "Gene Manipulation and Genomics", "credit": 4 },
-                { "subject": "Immunology", "credit": 4 },
-                { "subject": "Protein Engineering", "credit": 3 },
-                { "subject": "Professional Elective - II", "credit": 3 },
-                { "subject": "Open Elective - I", "credit": 3 },
-                { "subject": "Community Connect", "credit": 1 }
-            ],
-            "Semester 6": [
-                { "subject": "Data Science", "credit": 2 },
-                { "subject": "Animal Biotechnology", "credit": 3 },
-                { "subject": "Animal Biotechnology Laboratory", "credit": 2 },
-                { "subject": "Plant Biotechnology", "credit": 3 },
-                { "subject": "Professional Elective - III", "credit": 3 },
-                { "subject": "Open Elective - II", "credit": 3 },
-                { "subject": "Project / MOOCS", "credit": 3 }
-            ],
-            "Semester 7": [
-                { "subject": "Plant Biotechnology Laboratory", "credit": 2 },
-                { "subject": "Bio Separation Technology", "credit": 4 },
-                { "subject": "Professional Elective - IV", "credit": 3 },
-                { "subject": "Professional Elective - V", "credit": 3 },
-                { "subject": "Open Elective - III", "credit": 3 },
-                { "subject": "Behavioral Psychology", "credit": 3 }
-            ],
-            "Semester 8": [
-                { "subject": "Major Project / Major Project / Internship", "credit": 15 }
-            ]
-        },
-        "EEE": {
-            "Semester 1": [
-                { "subject": "Communicative English", "credit": 3 },
-                { "subject": "Calculus and Linear Algebra", "credit": 4 },
-                { "subject": "Physics: Electromagnetic Theory, Quantum Mechanics, Waves and Optics", "credit": 5 },
-                { "subject": "Engineering Graphics and Design", "credit": 2 },
-                { "subject": "Electrical and Electronics Engineering", "credit": 4 }
-            ],
-            "Semester 2": [
-                { "subject": "Chinese / French / German / Japanese / Korean / Spanish", "credit": 3 },
-                { "subject": "Philosophy of Engineering", "credit": 2 },
-                { "subject": "Advanced Calculus and Complex Analysis", "credit": 4 },
-                { "subject": "Chemistry", "credit": 5 },
-                { "subject": "Electric Circuits", "credit": 3 },
-                { "subject": "Programming for Problem Solving", "credit": 4 },
-                { "subject": "Biology", "credit": 2 },
-                { "subject": "Basic Civil and Mechanical Workshop", "credit": 2 }
-            ],
-            "Semester 3": [
-                { "subject": "Transforms and Computational Techniques", "credit": 4 },
-                { "subject": "Social Engineering", "credit": 2 },
-                { "subject": "Applied Engineering Mechanics", "credit": 3 },
-                { "subject": "Analog Electronics", "credit": 4 },
-                { "subject": "Electromagnetic Theory", "credit": 3 },
-                { "subject": "Electrical Machines - I", "credit": 3 },
-                { "subject": "Universal Human Values - Understanding Harmony and Ethical Human Conduct", "credit": 3 }
-            ],
-            "Semester 4": [
-                { "subject": "Probability and Statistics", "credit": 4 },
-                { "subject": "Digital System Design", "credit": 4 },
-                { "subject": "Electrical Machines - II", "credit": 3 },
-                { "subject": "Artificial Intelligence", "credit": 3 },
-                { "subject": "Control Systems", "credit": 3 },
-                { "subject": "Sensors and Instruments", "credit": 3 },
-                { "subject": "Design Thinking and Methodology", "credit": 3 }
-            ],
-            "Semester 5": [
-                { "subject": "Discrete Mathematics", "credit": 4 },
-                { "subject": "Power Electronics", "credit": 4 },
-                { "subject": "Digital Signal Processing", "credit": 3 },
-                { "subject": "Power System - I", "credit": 3 },
-                { "subject": "Professional Elective - I", "credit": 3 },
-                { "subject": "Open Elective - I", "credit": 3 },
-                { "subject": "Community Connect", "credit": 1 }
-            ],
-            "Semester 6": [
-                { "subject": "Data Science", "credit": 2 },
-                { "subject": "Power System - II", "credit": 4 },
-                { "subject": "Microcontroller", "credit": 3 },
-                { "subject": "Professional Elective - II", "credit": 3 },
-                { "subject": "Professional Elective - III", "credit": 3 },
-                { "subject": "Open Elective - II", "credit": 3 },
-                { "subject": "Project / MOOC", "credit": 3 }
-            ],
-            "Semester 7": [
-                { "subject": "Behavioral Psychology", "credit": 3 },
-                { "subject": "Professional Elective - IV", "credit": 3 },
-                { "subject": "Professional Elective - V", "credit": 3 },
-                { "subject": "Professional Elective - VI", "credit": 3 },
-                { "subject": "Professional Elective - VII", "credit": 3 },
                 { "subject": "Open Elective - III", "credit": 3 }
             ],
             "Semester 8": [

@@ -19,13 +19,15 @@
                 <button class="tab-button" data-tab="converter">CGPA Converter</button>
             </div>
 
+            <!-- GPA Calculator Tab -->
             <div id="calculator-tab" class="tab-content active">
+                <!-- Subject Selection Section -->
                 <div class="section">
                     <h3>Select Your Details</h3>
                     <div class="selection-grid">
                         <div class="selection-item">
                             <label for="regulation">Regulation Year</label>
-                            <select id="regulation" onchange="updateCourses()">
+                            <select id="regulation">
                                 <option value="">Select Regulation</option>
                                 <option value="2018">2018</option>
                                 <option value="2021">2021</option>
@@ -33,19 +35,20 @@
                         </div>
                         <div class="selection-item">
                             <label for="course">Course</label>
-                            <select id="course" onchange="updateSemesters()">
+                            <select id="course">
                                 <option value="">Select Course</option>
                             </select>
                         </div>
                         <div class="selection-item">
                             <label for="semester">Semester</label>
-                            <select id="semester" onchange="loadSubjects()">
+                            <select id="semester">
                                 <option value="">Select Semester</option>
                             </select>
                         </div>
                     </div>
                 </div>
 
+                <!-- Subjects Section -->
                 <div id="subjects-section" class="section" style="display: none;">
                     <h3>Enter Your Grades</h3>
                     <div class="selected-info">
@@ -73,6 +76,7 @@
                     </div>
                 </div>
 
+                <!-- Results Section -->
                 <div id="result-section" class="result-section">
                     <h3>Your GPA Result</h3>
                     <div class="result-value" id="gpa-result">0.00</div>
@@ -80,26 +84,30 @@
                         <p>Total Credits: <span id="total-credits">0</span></p>
                         <p>Grade Points: <span id="total-grade-points">0</span></p>
                         <p>Performance: <span id="performance-grade">-</span></p>
+                        <p>Equivalent %: <span id="equivalent-percentage">-</span></p>
                     </div>
                 </div>
             </div>
 
+            <!-- CGPA Converter Tab -->
             <div id="converter-tab" class="tab-content">
-                <div class="converter-section">
-                    <div class="converter-card">
-                        <h3>CGPA to Percentage</h3>
-                        <input type="number" class="converter-input" id="cgpa-input" placeholder="Enter CGPA (0-10)" step="0.01" min="0" max="10">
-                        <div class="converter-result" id="cgpa-percentage-result">Enter CGPA above</div>
-                    </div>
-                    <div class="converter-card">
-                        <h3>Percentage to CGPA</h3>
-                        <input type="number" class="converter-input" id="percentage-input" placeholder="Enter Percentage (0-100)" step="0.01" min="0" max="100">
-                        <div class="converter-result" id="percentage-cgpa-result">Enter Percentage above</div>
+                <div class="section">
+                    <h3>Quick CGPA Converter</h3>
+                    <div class="converter-section">
+                        <div class="converter-card">
+                            <h4>CGPA to Percentage</h4>
+                            <input type="number" class="converter-input" id="cgpa-input" placeholder="Enter CGPA (0-10)" step="0.01" min="0" max="10">
+                            <div class="converter-result" id="cgpa-percentage-result">Enter CGPA above</div>
+                        </div>
+                        <div class="converter-card">
+                            <h4>Percentage to CGPA</h4>
+                            <input type="number" class="converter-input" id="percentage-input" placeholder="Enter Percentage (0-100)" step="0.01" min="0" max="100">
+                            <div class="converter-result" id="percentage-cgpa-result">Enter Percentage above</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </main>
-        
 
         <footer class="footer">
             <p>&copy; 2025 Smart GPA Calculator. All rights reserved.</p>

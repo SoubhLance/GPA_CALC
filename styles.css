@@ -269,6 +269,21 @@ body {
     transform: translateY(-1px);
 }
 
+/* Tab Content */
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* Spectacular Section Design */
 .section {
     background: rgba(255, 255, 255, 0.05);
@@ -385,6 +400,12 @@ body {
     border-color: var(--accent-primary);
     box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.2);
     background: rgba(0, 0, 0, 0.5);
+}
+
+.selection-item select option {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    padding: 8px;
 }
 
 /* Mind-Blowing Selected Info */
@@ -610,6 +631,12 @@ body {
     background: rgba(0, 0, 0, 0.5);
 }
 
+.grade-select option {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    padding: 8px;
+}
+
 .grade-selected {
     border-color: var(--accent-primary);
     box-shadow: 0 0 20px rgba(14, 165, 233, 0.3);
@@ -816,7 +843,7 @@ body {
     box-shadow: 0 20px 50px rgba(14, 165, 233, 0.2);
 }
 
-.converter-card h3 {
+.converter-card h4 {
     color: var(--text-primary);
     margin-bottom: 25px;
     font-size: 1.3rem;
@@ -840,6 +867,10 @@ body {
     border-color: var(--accent-primary);
     box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.2);
     background: rgba(0, 0, 0, 0.5);
+}
+
+.converter-input::placeholder {
+    color: var(--text-muted);
 }
 
 .converter-result {
@@ -925,6 +956,10 @@ body {
         text-align: center;
     }
     
+    .header-item {
+        display: none;
+    }
+    
     .subject-name {
         flex-direction: column;
         text-align: center;
@@ -953,6 +988,14 @@ body {
     .result-value {
         font-size: 3rem;
     }
+    
+    .selection-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .selected-info {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 480px) {
@@ -971,14 +1014,6 @@ body {
     
     .result-value {
         font-size: 2.5rem;
-    }
-    
-    .selection-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .selected-info {
-        grid-template-columns: 1fr;
     }
 }
 
@@ -1010,12 +1045,6 @@ body {
 *:focus {
     outline: 2px solid var(--accent-primary);
     outline-offset: 2px;
-}
-
-/* Loading Animation */
-@keyframes loading {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
 }
 
 /* Accessibility Enhancements */
