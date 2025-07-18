@@ -7,75 +7,42 @@ function toggleTheme() {
     const themeLabel = document.querySelector('.theme-label');
     
     if (currentTheme === 'boy') {
-        // Switch to girl theme
         body.setAttribute('data-theme', 'girl');
         themeIcon.textContent = '👧';
         themeLabel.textContent = 'Girl';
         currentTheme = 'girl';
-        
-        // Add theme switch animation
-        body.style.transform = 'scale(0.98)';
-        setTimeout(() => {
-            body.style.transform = 'scale(1)';
-        }, 200);
-        
     } else {
-        // Switch to boy theme
         body.removeAttribute('data-theme');
         themeIcon.textContent = '👦';
         themeLabel.textContent = 'Boy';
         currentTheme = 'boy';
-        
-        // Add theme switch animation
-        body.style.transform = 'scale(0.98)';
-        setTimeout(() => {
-            body.style.transform = 'scale(1)';
-        }, 200);
     }
     
-    // Save theme preference
     localStorage.setItem('theme', currentTheme);
-    
-    // Add button click animation
-    const button = document.querySelector('.theme-toggle-btn');
-    button.style.transform = 'scale(0.95)';
-    setTimeout(() => {
-        button.style.transform = 'scale(1)';
-    }, 150);
 }
 
-// Load saved theme on page load
-function loadTheme() {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme && savedTheme === 'girl') {
-        toggleTheme();
-    }
-}
-
-// Tab functionality
+// Navigation functionality
 document.addEventListener('DOMContentLoaded', function() {
-    const tabButtons = document.querySelectorAll('.tab-button');
-    const tabContents = document.querySelectorAll('.tab-content');
-
-    tabButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const tabName = this.getAttribute('data-tab');
+    const navItems = document.querySelectorAll('.nav-item');
+    const contentSections = document.querySelectorAll('.content-section');
+    
+    navItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const targetSection = this.getAttribute('data-section');
             
-            // Remove active class from all buttons and contents
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            tabContents.forEach(content => content.classList.remove('active'));
-            
-            // Add active class to clicked button and corresponding content
+            // Update active nav item
+            navItems.forEach(nav => nav.classList.remove('active'));
             this.classList.add('active');
-            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Show target section
+            contentSections.forEach(section => section.classList.remove('active'));
+            document.getElementById(targetSection + '-section').classList.add('active');
         });
     });
 
-    // Initialize converters and dropdowns
+    // Initialize other functionality
     initializeConverters();
     initializeDropdowns();
-    
-    // Load saved theme
     loadTheme();
 });
 
@@ -90,8 +57,8 @@ function initializeDropdowns() {
 function initializeConverters() {
     const cgpaInput = document.getElementById('cgpa-input');
     const percentageInput = document.getElementById('percentage-input');
-    const cgpaResult = document.getElementById('cgpa-percentage-result');
-    const percentageResult = document.getElementById('percentage-cgpa-result');
+    const cgpaResult = document.getElementById('cgpa-result');
+    const percentageResult = document.getElementById('percentage-result');
 
     if (cgpaInput && cgpaResult) {
         cgpaInput.addEventListener('input', function() {
@@ -99,13 +66,13 @@ function initializeConverters() {
             if (!isNaN(cgpa) && cgpa >= 0 && cgpa <= 10) {
                 const percentage = (cgpa * 9.5).toFixed(2);
                 cgpaResult.textContent = `${percentage}%`;
-                cgpaResult.style.color = 'var(--accent-primary)';
+                cgpaResult.style.color = 'var(--primary-color)';
             } else if (this.value === '') {
-                cgpaResult.textContent = 'Enter CGPA above';
-                cgpaResult.style.color = 'var(--text-secondary)';
+                cgpaResult.textContent = 'Enter CGPA to convert';
+                cgpaResult.style.color = 'var(--text-muted)';
             } else {
-                cgpaResult.textContent = 'Enter valid CGPA (0-10)';
-                cgpaResult.style.color = 'var(--accent-red)';
+                cgpaResult.textContent = 'Invalid CGPA (0-10)';
+                cgpaResult.style.color = 'var(--error-color)';
             }
         });
     }
@@ -116,13 +83,13 @@ function initializeConverters() {
             if (!isNaN(percentage) && percentage >= 0 && percentage <= 100) {
                 const cgpa = (percentage / 9.5).toFixed(2);
                 percentageResult.textContent = cgpa;
-                percentageResult.style.color = 'var(--accent-primary)';
+                percentageResult.style.color = 'var(--primary-color)';
             } else if (this.value === '') {
-                percentageResult.textContent = 'Enter Percentage above';
-                percentageResult.style.color = 'var(--text-secondary)';
+                percentageResult.textContent = 'Enter percentage to convert';
+                percentageResult.style.color = 'var(--text-muted)';
             } else {
-                percentageResult.textContent = 'Enter valid percentage (0-100)';
-                percentageResult.style.color = 'var(--accent-red)';
+                percentageResult.textContent = 'Invalid percentage (0-100)';
+                percentageResult.style.color = 'var(--error-color)';
             }
         });
     }
@@ -150,20 +117,18 @@ function getPerformanceGrade(gpa) {
     return "Poor";
 }
 
-// Update courses dropdown based on regulation
+// Update courses dropdown
 function updateCourses() {
     const regulation = document.getElementById("regulation").value;
     const courseDropdown = document.getElementById("course");
     
-    // Clear previous options
-    courseDropdown.innerHTML = '<option value="">Select Course</option>';
+    courseDropdown.innerHTML = '<option value="">Choose Course</option>';
     
     if (!regulation) {
         resetSubjects();
         return;
     }
     
-    // Add courses based on regulation
     for (let course in regulations[regulation]) {
         const option = document.createElement("option");
         option.value = course;
@@ -171,28 +136,23 @@ function updateCourses() {
         courseDropdown.appendChild(option);
     }
     
-    // Reset semester dropdown
-    const semesterDropdown = document.getElementById("semester");
-    semesterDropdown.innerHTML = '<option value="">Select Semester</option>';
-    
+    document.getElementById("semester").innerHTML = '<option value="">Choose Semester</option>';
     resetSubjects();
 }
 
-// Update semesters dropdown based on course
+// Update semesters dropdown
 function updateSemesters() {
     const regulation = document.getElementById("regulation").value;
     const course = document.getElementById("course").value;
     const semesterDropdown = document.getElementById("semester");
     
-    // Clear previous options
-    semesterDropdown.innerHTML = '<option value="">Select Semester</option>';
+    semesterDropdown.innerHTML = '<option value="">Choose Semester</option>';
     
     if (!regulation || !course) {
         resetSubjects();
         return;
     }
     
-    // Add semesters based on course
     for (let semester in regulations[regulation][course]) {
         const option = document.createElement("option");
         option.value = semester;
@@ -203,7 +163,7 @@ function updateSemesters() {
     resetSubjects();
 }
 
-// Load subjects based on selected regulation, course, and semester
+// Load subjects in card format
 function loadSubjects() {
     const regulation = document.getElementById("regulation").value;
     const course = document.getElementById("course").value;
@@ -217,80 +177,56 @@ function loadSubjects() {
     const subjects = regulations[regulation][course][semester];
     const container = document.getElementById("subjects-container");
     
-    // Update selected info
-    document.getElementById("selected-regulation").textContent = regulation;
-    document.getElementById("selected-course").textContent = course;
-    document.getElementById("selected-semester").textContent = semester;
-    
-    // Clear previous subjects
     container.innerHTML = "";
     
-    // Create subject rows
     subjects.forEach((subjectObj, index) => {
-        const subjectRow = document.createElement("div");
-        subjectRow.className = "subject-row";
-        subjectRow.dataset.index = index;
+        const subjectCard = document.createElement("div");
+        subjectCard.className = "subject-card";
         
-        subjectRow.innerHTML = `
-            <div class="subject-name" title="${subjectObj.subject}">
-                <span class="subject-code">${index + 1}.</span>
-                <span class="subject-title">${subjectObj.subject}</span>
+        subjectCard.innerHTML = `
+            <div class="subject-header">
+                <span class="subject-name">${subjectObj.subject}</span>
+                <span class="subject-credits">${subjectObj.credit} Credits</span>
             </div>
-            <div class="subject-credits">
-                <span class="credit-value">${subjectObj.credit}</span>
-                <span class="credit-label">Credits</span>
-            </div>
-            <div class="subject-grade">
-                <select class="grade-select" onchange="updateGradeDisplay(this, ${index})">
-                    <option value="">Select Grade</option>
-                    <option value="O">O (10)</option>
-                    <option value="A+">A+ (9)</option>
-                    <option value="A">A (8)</option>
-                    <option value="B+">B+ (7)</option>
-                    <option value="B">B (6)</option>
-                    <option value="C">C (5)</option>
-                    <option value="F">F (0)</option>
-                </select>
+            <div class="grade-selector">
+                <button class="grade-btn" data-grade="O" onclick="selectGrade(this, ${index})">O</button>
+                <button class="grade-btn" data-grade="A+" onclick="selectGrade(this, ${index})">A+</button>
+                <button class="grade-btn" data-grade="A" onclick="selectGrade(this, ${index})">A</button>
+                <button class="grade-btn" data-grade="B+" onclick="selectGrade(this, ${index})">B+</button>
+                <button class="grade-btn" data-grade="B" onclick="selectGrade(this, ${index})">B</button>
+                <button class="grade-btn" data-grade="C" onclick="selectGrade(this, ${index})">C</button>
+                <button class="grade-btn" data-grade="F" onclick="selectGrade(this, ${index})">F</button>
             </div>
         `;
         
-        container.appendChild(subjectRow);
+        container.appendChild(subjectCard);
     });
     
-    // Show subjects section
-    document.getElementById("subjects-section").style.display = "block";
-    document.getElementById("subjects-section").scrollIntoView({ behavior: 'smooth' });
+    // Show subjects grid
+    document.getElementById("subjects-grid").style.display = "block";
     
-    // Hide result section
-    document.getElementById("result-section").classList.remove("show");
+    // Update stats
+    updateStats();
 }
 
-// Update grade display when grade is selected
-function updateGradeDisplay(selectElement, index) {
-    const row = selectElement.closest('.subject-row');
-    const grade = selectElement.value;
+// Select grade function
+function selectGrade(button, index) {
+    const card = button.closest('.subject-card');
+    const allButtons = card.querySelectorAll('.grade-btn');
     
-    if (grade) {
-        row.classList.add('grade-selected');
-        selectElement.style.backgroundColor = getGradeColor(grade);
-    } else {
-        row.classList.remove('grade-selected');
-        selectElement.style.backgroundColor = '';
-    }
+    allButtons.forEach(btn => btn.classList.remove('selected'));
+    button.classList.add('selected');
+    
+    updateProgress();
 }
 
-// Get color based on grade
-function getGradeColor(grade) {
-    const colors = {
-        'O': '#22c55e',
-        'A+': '#16a34a',
-        'A': '#84cc16',
-        'B+': '#eab308',
-        'B': '#f59e0b',
-        'C': '#f97316',
-        'F': '#ef4444'
-    };
-    return colors[grade] || '';
+// Update progress bar
+function updateProgress() {
+    const totalSubjects = document.querySelectorAll('.subject-card').length;
+    const selectedGrades = document.querySelectorAll('.grade-btn.selected').length;
+    const progress = totalSubjects > 0 ? (selectedGrades / totalSubjects) * 100 : 0;
+    
+    document.getElementById('progress-fill').style.width = progress + '%';
 }
 
 // Calculate GPA
@@ -305,78 +241,87 @@ function calculateGPA() {
     }
     
     const subjects = regulations[regulation][course][semester];
-    const selects = document.querySelectorAll("#subjects-container .grade-select");
+    const selectedGrades = document.querySelectorAll('.grade-btn.selected');
     
-    let totalGradePoints = 0;
-    let totalCredits = 0;
-    let unselectedGrades = 0;
-    
-    selects.forEach((select, index) => {
-        const credit = subjects[index].credit;
-        const grade = select.value;
-        
-        if (grade) {
-            const gradePoint = grades[grade];
-            totalCredits += credit;
-            totalGradePoints += gradePoint * credit;
-        } else {
-            unselectedGrades++;
-        }
-    });
-    
-    if (unselectedGrades > 0) {
-        alert(`Please select grades for all ${unselectedGrades} remaining subjects.`);
+    if (selectedGrades.length !== subjects.length) {
+        alert("Please select grades for all subjects.");
         return;
     }
     
+    let totalGradePoints = 0;
+    let totalCredits = 0;
+    
+    selectedGrades.forEach((gradeBtn, index) => {
+        const grade = gradeBtn.getAttribute('data-grade');
+        const credit = subjects[index].credit;
+        const gradePoint = grades[grade];
+        
+        totalCredits += credit;
+        totalGradePoints += gradePoint * credit;
+    });
+    
     const gpa = totalCredits > 0 ? (totalGradePoints / totalCredits).toFixed(2) : 0;
     const performance = getPerformanceGrade(parseFloat(gpa));
-    const equivalentPercentage = (parseFloat(gpa) * 9.5).toFixed(2);
+    const percentage = (parseFloat(gpa) * 9.5).toFixed(2);
     
-    // Update result display
-    document.getElementById("gpa-result").textContent = gpa;
-    document.getElementById("total-credits").textContent = totalCredits;
-    document.getElementById("total-grade-points").textContent = totalGradePoints.toFixed(2);
-    document.getElementById("performance-grade").textContent = performance;
-    document.getElementById("equivalent-percentage").textContent = equivalentPercentage + "%";
+    // Update results
+    document.getElementById("gpa-display").textContent = gpa;
+    document.getElementById("credits-display").textContent = totalCredits;
+    document.getElementById("grade-points-display").textContent = totalGradePoints.toFixed(2);
+    document.getElementById("percentage-display").textContent = percentage + "%";
     
-    // Show result section
-    const resultSection = document.getElementById("result-section");
-    resultSection.classList.add("show");
-    resultSection.scrollIntoView({ behavior: 'smooth' });
-}
-
-// Reset subjects section
-function resetSubjects() {
-    document.getElementById("subjects-section").style.display = "none";
-    document.getElementById("result-section").classList.remove("show");
-    document.getElementById("subjects-container").innerHTML = "";
+    // Update stats header
+    document.getElementById("current-gpa").textContent = gpa;
+    document.getElementById("total-subjects").textContent = subjects.length;
+    document.getElementById("performance-level").textContent = performance;
+    
+    // Show results panel
+    document.getElementById("results-panel").classList.add("show");
+    document.getElementById("results-panel").scrollIntoView({ behavior: 'smooth' });
 }
 
 // Reset calculator
 function resetCalculator() {
-    // Reset dropdowns
     document.getElementById("regulation").selectedIndex = 0;
-    document.getElementById("course").innerHTML = '<option value="">Select Course</option>';
-    document.getElementById("semester").innerHTML = '<option value="">Select Semester</option>';
+    document.getElementById("course").innerHTML = '<option value="">Choose Course</option>';
+    document.getElementById("semester").innerHTML = '<option value="">Choose Semester</option>';
     
-    // Reset subjects and results
     resetSubjects();
+    resetStats();
     
-    // Reset result values
-    document.getElementById("gpa-result").textContent = "0.00";
-    document.getElementById("total-credits").textContent = "0";
-    document.getElementById("total-grade-points").textContent = "0";
-    document.getElementById("performance-grade").textContent = "-";
-    document.getElementById("equivalent-percentage").textContent = "-";
-    
-    // Reset selected info
-    document.getElementById("selected-regulation").textContent = "-";
-    document.getElementById("selected-course").textContent = "-";
-    document.getElementById("selected-semester").textContent = "-";
+    document.getElementById("results-panel").classList.remove("show");
 }
 
-// Complete regulations data with all courses and semesters
+// Reset subjects
+function resetSubjects() {
+    document.getElementById("subjects-grid").style.display = "none";
+    document.getElementById("subjects-container").innerHTML = "";
+    document.getElementById("progress-fill").style.width = "0%";
+}
+
+// Update stats
+function updateStats() {
+    document.getElementById("current-gpa").textContent = "0.00";
+    document.getElementById("total-subjects").textContent = document.querySelectorAll('.subject-card').length;
+    document.getElementById("performance-level").textContent = "-";
+}
+
+// Reset stats
+function resetStats() {
+    document.getElementById("current-gpa").textContent = "0.00";
+    document.getElementById("total-subjects").textContent = "0";
+    document.getElementById("performance-level").textContent = "-";
+}
+
+// Load saved theme
+function loadTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme && savedTheme === 'girl') {
+        toggleTheme();
+    }
+}
+
+// Complete regulations data
 let regulations = {
     "2018": {
         "CSE": {

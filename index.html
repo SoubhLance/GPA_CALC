@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart GPA Calculator</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Theme Switcher Button -->
+    <!-- Floating Theme Switcher -->
     <div class="theme-switcher">
         <button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()">
             <span class="theme-icon">👦</span>
@@ -15,112 +16,192 @@
         </button>
     </div>
 
-    <div class="container">
-        <header class="header">
-            <h1>Smart <span class="highlight">GPA</span> Calculator</h1>
-            <p>Calculate your GPA, CGPA, and percentage with ease</p>
-        </header>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        <div class="floating-shape shape-4"></div>
+        <div class="floating-shape shape-5"></div>
+    </div>
 
-        <main class="main-content">
-            <div class="tabs">
-                <button class="tab-button active" data-tab="calculator">GPA Calculator</button>
-                <button class="tab-button" data-tab="converter">CGPA Converter</button>
+    <!-- Main Layout -->
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="logo-section">
+                <h1>Smart<span class="highlight">GPA</span></h1>
+                <p>Calculate with Style</p>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item active" data-section="calculator">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">GPA Calculator</span>
+                </button>
+                <button class="nav-item" data-section="converter">
+                    <span class="nav-icon">🔄</span>
+                    <span class="nav-text">CGPA Converter</span>
+                </button>
+                <button class="nav-item" data-section="analytics">
+                    <span class="nav-icon">📈</span>
+                    <span class="nav-text">Analytics</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Header Stats -->
+            <div class="stats-header">
+                <div class="stat-card">
+                    <span class="stat-icon">🎯</span>
+                    <div class="stat-info">
+                        <h3 id="current-gpa">0.00</h3>
+                        <p>Current GPA</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">📚</span>
+                    <div class="stat-info">
+                        <h3 id="total-subjects">0</h3>
+                        <p>Total Subjects</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">⭐</span>
+                    <div class="stat-info">
+                        <h3 id="performance-level">-</h3>
+                        <p>Performance</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- GPA Calculator Tab -->
-            <div id="calculator-tab" class="tab-content active">
-                <!-- Subject Selection Section -->
-                <div class="section">
-                    <h3>Select Your Details</h3>
-                    <div class="selection-grid">
-                        <div class="selection-item">
-                            <label for="regulation">Regulation Year</label>
-                            <select id="regulation">
-                                <option value="">Select Regulation</option>
-                                <option value="2018">2018</option>
-                                <option value="2021">2021</option>
-                            </select>
-                        </div>
-                        <div class="selection-item">
-                            <label for="course">Course</label>
-                            <select id="course">
-                                <option value="">Select Course</option>
-                            </select>
-                        </div>
-                        <div class="selection-item">
-                            <label for="semester">Semester</label>
-                            <select id="semester">
-                                <option value="">Select Semester</option>
-                            </select>
-                        </div>
+            <!-- Calculator Section -->
+            <div id="calculator-section" class="content-section active">
+                <div class="section-header">
+                    <h2>GPA Calculator</h2>
+                    <p>Select your details and calculate your GPA</p>
+                </div>
+
+                <!-- Selection Cards -->
+                <div class="selection-cards">
+                    <div class="selection-card">
+                        <label>Regulation Year</label>
+                        <select id="regulation" class="custom-select">
+                            <option value="">Choose Year</option>
+                            <option value="2018">2018</option>
+                            <option value="2021">2021</option>
+                        </select>
+                    </div>
+                    <div class="selection-card">
+                        <label>Course</label>
+                        <select id="course" class="custom-select">
+                            <option value="">Choose Course</option>
+                        </select>
+                    </div>
+                    <div class="selection-card">
+                        <label>Semester</label>
+                        <select id="semester" class="custom-select">
+                            <option value="">Choose Semester</option>
+                        </select>
                     </div>
                 </div>
 
-                <!-- Subjects Section -->
-                <div id="subjects-section" class="section" style="display: none;">
-                    <h3>Enter Your Grades</h3>
-                    <div class="selected-info">
-                        <div class="info-card">
-                            <strong>Regulation:</strong> <span id="selected-regulation">-</span>
-                        </div>
-                        <div class="info-card">
-                            <strong>Course:</strong> <span id="selected-course">-</span>
-                        </div>
-                        <div class="info-card">
-                            <strong>Semester:</strong> <span id="selected-semester">-</span>
+                <!-- Subjects Grid -->
+                <div id="subjects-grid" class="subjects-grid" style="display: none;">
+                    <div class="grid-header">
+                        <h3>Enter Your Grades</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
                         </div>
                     </div>
+                    <div id="subjects-container" class="subjects-container"></div>
                     
-                    <div class="course-header">
-                        <div class="header-item">Subject</div>
-                        <div class="header-item">Credits</div>
-                        <div class="header-item">Grade</div>
-                    </div>
-                    <div id="subjects-container"></div>
-                    
-                    <div class="actions">
-                        <button class="calculate-btn" onclick="calculateGPA()">Calculate GPA</button>
-                        <button class="reset-btn" onclick="resetCalculator()">Reset</button>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="calculateGPA()">
+                            <span>Calculate GPA</span>
+                            <span class="btn-icon">🧮</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="resetCalculator()">
+                            <span>Reset</span>
+                            <span class="btn-icon">🔄</span>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Results Section -->
-                <div id="result-section" class="result-section">
-                    <h3>Your GPA Result</h3>
-                    <div class="result-value" id="gpa-result">0.00</div>
+                <!-- Results Panel -->
+                <div id="results-panel" class="results-panel">
+                    <div class="result-header">
+                        <h3>Your Results</h3>
+                        <div class="result-score" id="gpa-display">0.00</div>
+                    </div>
                     <div class="result-details">
-                        <p>Total Credits: <span id="total-credits">0</span></p>
-                        <p>Grade Points: <span id="total-grade-points">0</span></p>
-                        <p>Performance: <span id="performance-grade">-</span></p>
-                        <p>Equivalent %: <span id="equivalent-percentage">-</span></p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CGPA Converter Tab -->
-            <div id="converter-tab" class="tab-content">
-                <div class="section">
-                    <h3>Quick CGPA Converter</h3>
-                    <div class="converter-section">
-                        <div class="converter-card">
-                            <h4>CGPA to Percentage</h4>
-                            <input type="number" class="converter-input" id="cgpa-input" placeholder="Enter CGPA (0-10)" step="0.01" min="0" max="10">
-                            <div class="converter-result" id="cgpa-percentage-result">Enter CGPA above</div>
+                        <div class="result-item">
+                            <span class="label">Credits</span>
+                            <span class="value" id="credits-display">0</span>
                         </div>
-                        <div class="converter-card">
-                            <h4>Percentage to CGPA</h4>
-                            <input type="number" class="converter-input" id="percentage-input" placeholder="Enter Percentage (0-100)" step="0.01" min="0" max="100">
-                            <div class="converter-result" id="percentage-cgpa-result">Enter Percentage above</div>
+                        <div class="result-item">
+                            <span class="label">Grade Points</span>
+                            <span class="value" id="grade-points-display">0</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="label">Percentage</span>
+                            <span class="value" id="percentage-display">0%</span>
                         </div>
                     </div>
                 </div>
             </div>
-        </main>
 
-        <footer class="footer">
-            <p>&copy; 2025 Smart GPA Calculator. All rights reserved.</p>
-            <p>Made with ❤️ for students</p>
-        </footer>
+            <!-- Converter Section -->
+            <div id="converter-section" class="content-section">
+                <div class="section-header">
+                    <h2>CGPA Converter</h2>
+                    <p>Convert between CGPA and Percentage</p>
+                </div>
+
+                <div class="converter-grid">
+                    <div class="converter-card">
+                        <h4>CGPA to Percentage</h4>
+                        <div class="input-group">
+                            <input type="number" id="cgpa-input" placeholder="Enter CGPA" min="0" max="10" step="0.01">
+                            <span class="input-unit">CGPA</span>
+                        </div>
+                        <div class="conversion-result" id="cgpa-result">Enter CGPA to convert</div>
+                    </div>
+                    <div class="converter-card">
+                        <h4>Percentage to CGPA</h4>
+                        <div class="input-group">
+                            <input type="number" id="percentage-input" placeholder="Enter Percentage" min="0" max="100" step="0.01">
+                            <span class="input-unit">%</span>
+                        </div>
+                        <div class="conversion-result" id="percentage-result">Enter percentage to convert</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Section -->
+            <div id="analytics-section" class="content-section">
+                <div class="section-header">
+                    <h2>Grade Analytics</h2>
+                    <p>Visual representation of your performance</p>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card">
+                        <h4>Grade Distribution</h4>
+                        <div class="grade-chart" id="grade-chart">
+                            <div class="chart-placeholder">📊 Grade data will appear here</div>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <h4>Performance Trend</h4>
+                        <div class="trend-chart" id="trend-chart">
+                            <div class="chart-placeholder">📈 Trend data will appear here</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
