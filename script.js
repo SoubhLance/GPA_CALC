@@ -1,3 +1,57 @@
+// Theme functionality
+let currentTheme = 'boy';
+
+function toggleTheme() {
+    const body = document.body;
+    const themeIcon = document.querySelector('.theme-icon');
+    const themeLabel = document.querySelector('.theme-label');
+    
+    if (currentTheme === 'boy') {
+        // Switch to girl theme
+        body.setAttribute('data-theme', 'girl');
+        themeIcon.textContent = '👧';
+        themeLabel.textContent = 'Girl';
+        currentTheme = 'girl';
+        
+        // Add theme switch animation
+        body.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+            body.style.transform = 'scale(1)';
+        }, 200);
+        
+    } else {
+        // Switch to boy theme
+        body.removeAttribute('data-theme');
+        themeIcon.textContent = '👦';
+        themeLabel.textContent = 'Boy';
+        currentTheme = 'boy';
+        
+        // Add theme switch animation
+        body.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+            body.style.transform = 'scale(1)';
+        }, 200);
+    }
+    
+    // Save theme preference
+    localStorage.setItem('theme', currentTheme);
+    
+    // Add button click animation
+    const button = document.querySelector('.theme-toggle-btn');
+    button.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+        button.style.transform = 'scale(1)';
+    }, 150);
+}
+
+// Load saved theme on page load
+function loadTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme && savedTheme === 'girl') {
+        toggleTheme();
+    }
+}
+
 // Tab functionality
 document.addEventListener('DOMContentLoaded', function() {
     const tabButtons = document.querySelectorAll('.tab-button');
@@ -20,6 +74,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize converters and dropdowns
     initializeConverters();
     initializeDropdowns();
+    
+    // Load saved theme
+    loadTheme();
 });
 
 // Initialize dropdown event listeners
@@ -42,13 +99,13 @@ function initializeConverters() {
             if (!isNaN(cgpa) && cgpa >= 0 && cgpa <= 10) {
                 const percentage = (cgpa * 9.5).toFixed(2);
                 cgpaResult.textContent = `${percentage}%`;
-                cgpaResult.style.color = '#0ea5e9';
+                cgpaResult.style.color = 'var(--accent-primary)';
             } else if (this.value === '') {
                 cgpaResult.textContent = 'Enter CGPA above';
-                cgpaResult.style.color = '#b8c5d6';
+                cgpaResult.style.color = 'var(--text-secondary)';
             } else {
                 cgpaResult.textContent = 'Enter valid CGPA (0-10)';
-                cgpaResult.style.color = '#ef4444';
+                cgpaResult.style.color = 'var(--accent-red)';
             }
         });
     }
@@ -59,13 +116,13 @@ function initializeConverters() {
             if (!isNaN(percentage) && percentage >= 0 && percentage <= 100) {
                 const cgpa = (percentage / 9.5).toFixed(2);
                 percentageResult.textContent = cgpa;
-                percentageResult.style.color = '#0ea5e9';
+                percentageResult.style.color = 'var(--accent-primary)';
             } else if (this.value === '') {
                 percentageResult.textContent = 'Enter Percentage above';
-                percentageResult.style.color = '#b8c5d6';
+                percentageResult.style.color = 'var(--text-secondary)';
             } else {
                 percentageResult.textContent = 'Enter valid percentage (0-100)';
-                percentageResult.style.color = '#ef4444';
+                percentageResult.style.color = 'var(--accent-red)';
             }
         });
     }
