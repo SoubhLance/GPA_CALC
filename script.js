@@ -28,34 +28,213 @@ function initializeConverters() {
     const cgpaResult = document.getElementById('cgpa-percentage-result');
     const percentageResult = document.getElementById('percentage-cgpa-result');
 
-    if (cgpaInput) {
+    if (cgpaInput && cgpaResult) {
         cgpaInput.addEventListener('input', function() {
             const cgpa = parseFloat(this.value);
             if (!isNaN(cgpa) && cgpa >= 0 && cgpa <= 10) {
                 const percentage = (cgpa * 9.5).toFixed(2);
                 cgpaResult.textContent = `${percentage}%`;
-                cgpaResult.style.color = 'var(--accent-primary)';
+                cgpaResult.style.color = '#0ea5e9';
+            } else if (this.value === '') {
+                cgpaResult.textContent = 'Enter CGPA above';
+                cgpaResult.style.color = '#b8c5d6';
             } else {
                 cgpaResult.textContent = 'Enter valid CGPA (0-10)';
-                cgpaResult.style.color = 'var(--error-color)';
+                cgpaResult.style.color = '#ef4444';
             }
         });
     }
 
-    if (percentageInput) {
+    if (percentageInput && percentageResult) {
         percentageInput.addEventListener('input', function() {
             const percentage = parseFloat(this.value);
             if (!isNaN(percentage) && percentage >= 0 && percentage <= 100) {
                 const cgpa = (percentage / 9.5).toFixed(2);
                 percentageResult.textContent = cgpa;
-                percentageResult.style.color = 'var(--accent-primary)';
+                percentageResult.style.color = '#0ea5e9';
+            } else if (this.value === '') {
+                percentageResult.textContent = 'Enter Percentage above';
+                percentageResult.style.color = '#b8c5d6';
             } else {
                 percentageResult.textContent = 'Enter valid percentage (0-100)';
-                percentageResult.style.color = 'var(--error-color)';
+                percentageResult.style.color = '#ef4444';
             }
         });
     }
 }
+
+// Make sure to call this function when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Your existing tab functionality...
+    
+    // Initialize converter input listeners
+    initializeConverters();
+});
+
+// Tab functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const tabName = this.getAttribute('data-tab');
+            
+            // Remove active class from all buttons and contents
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked button and corresponding content
+            this.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+        });
+    });
+
+    // Initialize converter input listeners
+    initializeConverters();
+});
+
+// Enhanced converter initialization for both locations
+function initializeConverters() {
+    // Main calculator section converters
+    const cgpaInput = document.getElementById('cgpa-input');
+    const percentageInput = document.getElementById('percentage-input');
+    const cgpaResult = document.getElementById('cgpa-percentage-result');
+    const percentageResult = document.getElementById('percentage-cgpa-result');
+
+    // Separate tab converters
+    const cgpaInputTab = document.getElementById('cgpa-input-tab');
+    const percentageInputTab = document.getElementById('percentage-input-tab');
+    const cgpaResultTab = document.getElementById('cgpa-percentage-result-tab');
+    const percentageResultTab = document.getElementById('percentage-cgpa-result-tab');
+
+    // Setup main calculator converters
+    if (cgpaInput && cgpaResult) {
+        cgpaInput.addEventListener('input', function() {
+            const cgpa = parseFloat(this.value);
+            if (!isNaN(cgpa) && cgpa >= 0 && cgpa <= 10) {
+                const percentage = (cgpa * 9.5).toFixed(2);
+                cgpaResult.textContent = `${percentage}%`;
+                cgpaResult.style.color = '#0ea5e9';
+            } else if (this.value === '') {
+                cgpaResult.textContent = 'Enter CGPA above';
+                cgpaResult.style.color = '#b8c5d6';
+            } else {
+                cgpaResult.textContent = 'Enter valid CGPA (0-10)';
+                cgpaResult.style.color = '#ef4444';
+            }
+        });
+    }
+
+    if (percentageInput && percentageResult) {
+        percentageInput.addEventListener('input', function() {
+            const percentage = parseFloat(this.value);
+            if (!isNaN(percentage) && percentage >= 0 && percentage <= 100) {
+                const cgpa = (percentage / 9.5).toFixed(2);
+                percentageResult.textContent = cgpa;
+                percentageResult.style.color = '#0ea5e9';
+            } else if (this.value === '') {
+                percentageResult.textContent = 'Enter Percentage above';
+                percentageResult.style.color = '#b8c5d6';
+            } else {
+                percentageResult.textContent = 'Enter valid percentage (0-100)';
+                percentageResult.style.color = '#ef4444';
+            }
+        });
+    }
+
+    // Setup separate tab converters
+    if (cgpaInputTab && cgpaResultTab) {
+        cgpaInputTab.addEventListener('input', function() {
+            const cgpa = parseFloat(this.value);
+            if (!isNaN(cgpa) && cgpa >= 0 && cgpa <= 10) {
+                const percentage = (cgpa * 9.5).toFixed(2);
+                cgpaResultTab.textContent = `${percentage}%`;
+                cgpaResultTab.style.color = '#0ea5e9';
+            } else if (this.value === '') {
+                cgpaResultTab.textContent = 'Enter CGPA above';
+                cgpaResultTab.style.color = '#b8c5d6';
+            } else {
+                cgpaResultTab.textContent = 'Enter valid CGPA (0-10)';
+                cgpaResultTab.style.color = '#ef4444';
+            }
+        });
+    }
+
+    if (percentageInputTab && percentageResultTab) {
+        percentageInputTab.addEventListener('input', function() {
+            const percentage = parseFloat(this.value);
+            if (!isNaN(percentage) && percentage >= 0 && percentage <= 100) {
+                const cgpa = (percentage / 9.5).toFixed(2);
+                percentageResultTab.textContent = cgpa;
+                percentageResultTab.style.color = '#0ea5e9';
+            } else if (this.value === '') {
+                percentageResultTab.textContent = 'Enter Percentage above';
+                percentageResultTab.style.color = '#b8c5d6';
+            } else {
+                percentageResultTab.textContent = 'Enter valid percentage (0-100)';
+                percentageResultTab.style.color = '#ef4444';
+            }
+        });
+    }
+}
+
+// Enhanced GPA calculation with percentage conversion
+function calculateGPA() {
+    const regulation = document.getElementById("regulation").value;
+    const course = document.getElementById("course").value;
+    const semester = document.getElementById("semester").value;
+    
+    if (!regulation || !course || !semester) {
+        alert("Please select regulation, course, and semester first.");
+        return;
+    }
+    
+    const subjects = regulations[regulation][course][semester];
+    const selects = document.querySelectorAll("#subjects-container .grade-select");
+    
+    let totalGradePoints = 0;
+    let totalCredits = 0;
+    let unselectedGrades = 0;
+    
+    selects.forEach((select, index) => {
+        const credit = subjects[index].credit;
+        const grade = select.value;
+        
+        if (grade) {
+            const gradePoint = grades[grade];
+            totalCredits += credit;
+            totalGradePoints += gradePoint * credit;
+        } else {
+            unselectedGrades++;
+        }
+    });
+    
+    if (unselectedGrades > 0) {
+        alert(`Please select grades for all ${unselectedGrades} remaining subjects.`);
+        return;
+    }
+    
+    const gpa = totalCredits > 0 ? (totalGradePoints / totalCredits).toFixed(2) : 0;
+    const performance = getPerformanceGrade(parseFloat(gpa));
+    const equivalentPercentage = (parseFloat(gpa) * 9.5).toFixed(2);
+    
+    // Update result display
+    document.getElementById("gpa-result").textContent = gpa;
+    document.getElementById("total-credits").textContent = totalCredits;
+    document.getElementById("total-grade-points").textContent = totalGradePoints.toFixed(2);
+    document.getElementById("performance-grade").textContent = performance;
+    document.getElementById("equivalent-percentage").textContent = equivalentPercentage + "%";
+    
+    // Show result section
+    const resultSection = document.getElementById("result-section");
+    resultSection.classList.add("show");
+    resultSection.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Rest of your existing JavaScript code remains the same...
+// (Include all the other functions like updateCourses, updateSemesters, loadSubjects, etc.)
+
 
 // Grade point mapping
 const grades = {
