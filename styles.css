@@ -181,6 +181,7 @@ body {
     box-shadow: 0 8px 32px var(--shadow-medium);
     position: relative;
     overflow: hidden;
+    margin-bottom: 30px;
 }
 
 .section::before {
@@ -214,10 +215,55 @@ body {
     border-radius: 2px;
 }
 
+/* Selection Grid */
+.selection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.selection-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.selection-item label {
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.selection-item select {
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1em;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.selection-item select:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px var(--blue-glow);
+}
+
+.selection-item select option {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    padding: 8px;
+}
+
 /* Course header */
 .course-header {
     display: grid;
-    grid-template-columns: 2fr 1fr 1.5fr 80px;
+    grid-template-columns: 2fr 1fr 1fr;
     gap: 15px;
     padding: 15px 20px;
     background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
@@ -235,22 +281,22 @@ body {
     letter-spacing: 0.5px;
 }
 
-/* Course rows */
-.course-row {
+/* Subject rows */
+.subject-row {
     display: grid;
-    grid-template-columns: 2fr 1fr 1.5fr 80px;
+    grid-template-columns: 2fr 1fr 1fr;
     gap: 15px;
     align-items: center;
     padding: 15px 20px;
     background: linear-gradient(135deg, var(--bg-secondary), var(--bg-card));
     border-radius: 8px;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
     border: 1px solid var(--border-color);
     transition: all 0.3s ease;
     position: relative;
 }
 
-.course-row::before {
+.subject-row::before {
     content: '';
     position: absolute;
     left: 0;
@@ -263,78 +309,45 @@ body {
     transition: opacity 0.3s ease;
 }
 
-.course-row:hover {
+.subject-row:hover {
     background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
     transform: translateY(-2px);
     box-shadow: 0 8px 25px var(--shadow-medium);
     border-color: var(--accent-primary);
 }
 
-.course-row:hover::before {
+.subject-row:hover::before {
     opacity: 1;
 }
 
-/* Input groups */
-.input-group {
-    display: flex;
-    flex-direction: column;
+.subject-name {
+    font-size: 1em;
+    color: var(--text-primary);
+    font-weight: 500;
 }
 
-.input-group input,
-.input-group select {
-    padding: 12px 16px;
+.subject-credits {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-align: center;
+}
+
+.subject-grade select {
+    padding: 8px 12px;
     border: 1px solid var(--border-color);
     border-radius: 6px;
-    font-size: 1em;
-    transition: all 0.3s ease;
+    font-size: 0.9em;
     background: var(--bg-primary);
     color: var(--text-primary);
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-.input-group input:focus,
-.input-group select:focus {
+.subject-grade select:focus {
     outline: none;
     border-color: var(--accent-primary);
-    box-shadow: 0 0 0 3px var(--blue-glow);
-    background: var(--bg-secondary);
-}
-
-.input-group input::placeholder {
-    color: var(--text-muted);
-}
-
-/* Select styling */
-.input-group select {
-    cursor: pointer;
-}
-
-.input-group select option {
-    background: var(--bg-primary);
-    color: var(--text-primary);
-}
-
-/* Buttons */
-.remove-btn {
-    background: linear-gradient(135deg, var(--error-color), #dc2626);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    width: 36px;
-    height: 36px;
-    cursor: pointer;
-    font-size: 1.2em;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    box-shadow: 0 2px 10px rgba(239, 68, 68, 0.3);
-}
-
-.remove-btn:hover {
-    background: linear-gradient(135deg, #dc2626, #b91c1c);
-    transform: scale(1.05);
-    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.5);
+    box-shadow: 0 0 0 2px var(--blue-glow);
 }
 
 /* Action buttons */
@@ -346,7 +359,6 @@ body {
     flex-wrap: wrap;
 }
 
-.add-course-btn,
 .calculate-btn,
 .reset-btn {
     padding: 12px 24px;
@@ -359,18 +371,6 @@ body {
     min-width: 120px;
     position: relative;
     overflow: hidden;
-}
-
-.add-course-btn {
-    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-    color: white;
-    box-shadow: 0 4px 15px var(--blue-glow-strong);
-}
-
-.add-course-btn:hover {
-    background: linear-gradient(135deg, var(--accent-hover), var(--accent-primary));
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px var(--blue-glow-strong);
 }
 
 .calculate-btn {
@@ -548,68 +548,55 @@ body {
     margin: 5px 0;
 }
 
-.footer a {
-    color: var(--accent-primary);
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.footer a:hover {
-    color: var(--accent-hover);
-    text-decoration: underline;
-    text-shadow: 0 0 10px var(--accent-primary);
-}
-
 /* Responsive design */
 @media (max-width: 768px) {
     .header {
         padding: 30px 20px;
     }
-    
+
     .header h1 {
         font-size: 2em;
     }
-    
+
     .main-content {
         padding: 20px;
     }
-    
+
     .section {
         padding: 20px;
     }
-    
+
     .course-header,
-    .course-row {
+    .subject-row {
         grid-template-columns: 1fr;
         gap: 10px;
         text-align: center;
     }
-    
+
     .header-item {
         display: none;
     }
-    
+
     .converter-section {
         grid-template-columns: 1fr;
     }
-    
+
     .actions {
         flex-direction: column;
         align-items: center;
     }
-    
-    .add-course-btn,
+
     .calculate-btn,
     .reset-btn {
         width: 100%;
         max-width: 300px;
     }
-    
+
     .result-details {
         flex-direction: column;
         gap: 10px;
     }
-    
+
     .result-value {
         font-size: 2.5em;
     }
@@ -619,17 +606,21 @@ body {
     .header h1 {
         font-size: 1.8em;
     }
-    
+
     .tabs {
         flex-direction: column;
         gap: 5px;
     }
-    
+
     .tab-button {
         padding: 15px;
     }
-    
+
     .result-value {
         font-size: 2em;
+    }
+
+    .selection-grid {
+        grid-template-columns: 1fr;
     }
 }
