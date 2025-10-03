@@ -51,11 +51,33 @@ cd srm-gpa-calculator
 
 ### File Structure
 ```
-srm-gpa-calculator/
-├── index.html 
-├── styles.css
-├── script.js
-└── README.md
+GPA_CALC_V2/
+└── GPA-CALC/
+    ├── dist/
+    │   └── assets/
+    │       └── index.html
+    ├── node_modules/
+    ├── public/
+    │   └── vite.svg
+    ├── src/
+    │   ├── assets/
+    │   │   └── react.svg
+    │   ├── Dashboard/
+    │   │   └── Dashboard.jsx
+    │   ├── App.css
+    │   ├── App.jsx
+    │   ├── index.css
+    │   └── main.jsx
+    ├── .gitignore
+    ├── eslint.config.js
+    ├── index.html
+    ├── package-lock.json
+    ├── package.json
+    ├── postcss.config.js
+    ├── README.md
+    ├── tailwind.config.js
+    └── vite.config.js
+
 ```
 
 
@@ -100,16 +122,13 @@ The calculator uses SRM University's official 10-point grading system:
 ## 🔧 Technical Details
 
 ### Technologies Used
-- **HTML5** - Semantic markup
-- **CSS3** - Modern styling with custom properties
-- **Vanilla JavaScript** - No external dependencies
-- **localStorage** - Data persistence
+- **React.js** - Component-based UI development
+- **Vite** - Next-generation frontend build tool
+- **Tailwind CSS** - Utility-first CSS framework
+- **PostCSS** - CSS transformations and plugins
+- **ESLint** - Linting and code quality
+- **JavaScript (ES6+)** - Modern JavaScript features
 
-### Browser Support
-- Chrome 60+
-- Firefox 55+
-- Safari 12+
-- Edge 79+
 
 ### Performance Features
 - **Optimized animations** - 60fps smooth transitions
